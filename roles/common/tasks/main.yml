@@ -1,0 +1,34 @@
+---
+- name: Install zip and vim
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - zip
+      - vim
+
+- name: Copy data.txt
+  copy: src=data.txt dest=/tmp/test1
+
+- name: Register copy files statement
+  shell: cat /tmp/test1
+  register: result
+
+- name: Verfiy copy
+  debug:
+    msg: "Success"
+  when: result.rc == 0
+
+- name: Template a file to another place
+  template:
+    src: hostname.j2
+    dest: /tmp/test2
+
+- name: Register template statement
+  shell: cat /tmp/test2
+  register: result
+
+- name: Verify template
+  debug:
+    msg: "Success"
+  when: result.rc == 0
